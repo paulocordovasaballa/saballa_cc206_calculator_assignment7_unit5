@@ -32,7 +32,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   double sum = 0;
   double difference = 0;
   double product = 0;
-  String quotient = '0'; // String to handle quotient or error message
+  String quotient = '0'; // String for handling error message
 
   final TextEditingController firstAddNumController = TextEditingController();
   final TextEditingController secondAddNumController = TextEditingController();
