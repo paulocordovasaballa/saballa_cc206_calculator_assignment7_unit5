@@ -32,7 +32,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   double sum = 0;
   double difference = 0;
   double product = 0;
-  double quotient = 0;
+  String quotient = '0'; // String to handle quotient or error message
 
   final TextEditingController firstAddNumController = TextEditingController();
   final TextEditingController secondAddNumController = TextEditingController();
@@ -50,12 +50,12 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         title: const Text("[Saballa] Unit 5 Calculator"),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(24.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const SizedBox(height: 30),
-            _buildOperationRow(
+            _createOperationRow(
               firstNumController: firstAddNumController,
               secondNumController: secondAddNumController,
               operation: '+',
@@ -63,14 +63,14 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
               icon: Icons.add,
               onCalculate: () {
                 setState(() {
-                  double firstNum = double.tryParse(firstAddNumController.text) ?? 0;
-                  double secondNum = double.tryParse(secondAddNumController.text) ?? 0;
-                  sum = firstNum + secondNum;
+                  double num1 = double.tryParse(firstAddNumController.text) ?? 0;
+                  double num2 = double.tryParse(secondAddNumController.text) ?? 0;
+                  sum = num1 + num2;
                 });
               },
             ),
             const SizedBox(height: 30),
-            _buildOperationRow(
+            _createOperationRow(
               firstNumController: firstSubtNumController,
               secondNumController: secondSubtNumController,
               operation: '-',
@@ -78,14 +78,14 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
               icon: Icons.remove,
               onCalculate: () {
                 setState(() {
-                  double firstNum = double.tryParse(firstSubtNumController.text) ?? 0;
-                  double secondNum = double.tryParse(secondSubtNumController.text) ?? 0;
-                  difference = firstNum - secondNum;
+                  double num1 = double.tryParse(firstSubtNumController.text) ?? 0;
+                  double num2 = double.tryParse(secondSubtNumController.text) ?? 0;
+                  difference = num1 - num2;
                 });
               },
             ),
             const SizedBox(height: 30),
-            _buildOperationRow(
+            _createOperationRow(
               firstNumController: firstMultNumController,
               secondNumController: secondMultNumController,
               operation: '*',
@@ -93,28 +93,32 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
               icon: Icons.clear,
               onCalculate: () {
                 setState(() {
-                  double firstNum = double.tryParse(firstMultNumController.text) ?? 0;
-                  double secondNum = double.tryParse(secondMultNumController.text) ?? 0;
-                  product = firstNum * secondNum;
+                  double num1 = double.tryParse(firstMultNumController.text) ?? 0;
+                  double num2 = double.tryParse(secondMultNumController.text) ?? 0;
+                  product = num1 * num2;
                 });
               },
             ),
-            const SizedBox(height:30),
-            _buildOperationRow(
+            const SizedBox(height: 30),
+            _createOperationRow(
               firstNumController: firstDivNumController,
               secondNumController: secondDivNumController,
               operation: '÷',
-              result: quotient.toStringAsFixed(2),
+              result: quotient,
               icon: CupertinoIcons.divide,
               onCalculate: () {
                 setState(() {
-                  double firstNum = double.tryParse(firstDivNumController.text) ?? 0;
-                  double secondNum = double.tryParse(secondDivNumController.text) ?? 1;
-                  quotient = secondNum != 0 ? firstNum / secondNum : 0;
+                  double num1 = double.tryParse(firstDivNumController.text) ?? 0;
+                  double num2 = double.tryParse(secondDivNumController.text) ?? 1;
+                  if (num2 == 0) {
+                    quotient = "Divisor must not be 0";
+                  } else {
+                    quotient = (num1 / num2).toStringAsFixed(2);
+                  }
                 });
               },
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
             ElevatedButton(
               onPressed: _clearAll,
               child: const Text("Clear"),
@@ -125,7 +129,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     );
   }
 
-  Row _buildOperationRow({
+  Row _createOperationRow({
     required TextEditingController firstNumController,
     required TextEditingController secondNumController,
     required String operation,
@@ -144,7 +148,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Text(
             operation,
             style: const TextStyle(fontSize: 20),
@@ -166,7 +170,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         ),
         Text(
           result,
-          style: const TextStyle(fontSize: 24),
+          style: const TextStyle(fontSize: 18),
         ),
         IconButton(
           icon: Icon(icon),
@@ -189,7 +193,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       sum = 0;
       difference = 0;
       product = 0;
-      quotient = 0;
+      quotient = '0';
     });
   }
 }
